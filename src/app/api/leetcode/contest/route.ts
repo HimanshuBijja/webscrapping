@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 export async function GET() {
     const UPCOMING_CONTESTS_QUERY = `
         query contestUpcomingContests {
-        allContests {
-            title
-            titleSlug
-            startTime
-        }
+            allContests {
+                title
+                titleSlug
+                startTime
+            }
         }
         `;
 
@@ -29,7 +29,10 @@ export async function GET() {
 
     const data = await response.data.data.allContests;
 
+    
+
     return NextResponse.json({
+        source : "Leetcode",
         data : data,
     });
 }

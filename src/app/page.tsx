@@ -1,9 +1,12 @@
-import Image from "next/image";
+import axios from "axios";
+import Leetcode from "./components/Leetcode";
 
-export default function Home() {
+export default async function Home() {
+
+  
   return(
     <div>
-      hello 
+      <Leetcode/>
     </div>
   )
 }
