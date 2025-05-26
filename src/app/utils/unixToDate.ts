@@ -1,10 +1,11 @@
-function unixToDate(startTime : number){
-    const time = new Date(startTime * 1000);
+export function unixToDate(startTime : number){
+    const unixTime = new Date(startTime * 1000);
 
-    const hours = time.getHours();
-    const minutes = "0" + time.getMinutes();
-    const seconds = "0" + time.getSeconds();
-    const formattedTime = hours + ":" + minutes;
+    const hours = unixTime.getHours();
+    let minutes;
+    unixTime.getMinutes() < 10 ? minutes = "0" + unixTime.getMinutes() : minutes = unixTime.getMinutes()
+    const seconds = "0" + unixTime.getSeconds();
+    const time = hours + ":" + minutes;
 
     const months = [
         "Jan",
@@ -20,13 +21,13 @@ function unixToDate(startTime : number){
         "Nov",
         "Dec",
     ];
-    const year = time.getFullYear();
-    const month = months[time.getMonth()];
-    const date = time.getDate();
+    const year = unixTime.getFullYear();
+    const month = months[unixTime.getMonth()];
+    const date = unixTime.getDate();
 
     const formattedDate = date + " " + month;
 
-    return {formattedTime, formattedDate};
+    return {time, date , month};
 }
 
 
