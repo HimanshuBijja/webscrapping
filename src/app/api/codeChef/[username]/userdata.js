@@ -58,7 +58,7 @@ function contestCountOBJ(str) {
     return match ? Number(match[0]) : 0;
 }
 
-const scrapping = async () => {
+export const scrapping = async () => {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
@@ -96,4 +96,4 @@ const scrapping = async () => {
     };
 };
 
-scrapping().then(console.log);
+// scrapping().then(console.log);
