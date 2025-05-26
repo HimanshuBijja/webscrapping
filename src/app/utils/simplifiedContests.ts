@@ -1,4 +1,5 @@
 import { isoToUnix } from "./isoToUnix";
+import { unixToDate } from "./unixToDate";
 
 interface gfgContestType {
     slug: string;
@@ -86,10 +87,26 @@ interface cfContestType {
 
 export function simplifiedCfContests(contests : cfContestType[]){
     const simplified = contests.map((contest) => ({
-        source: "Code Chef",
+        source: "Code forces",
         title: contest.name,
         startTime: contest.startTimeSeconds,
         link: "https://codeforces.com/contests/",
+    }));
+
+    return simplified;
+}
+
+interface addDateType {
+      "source": string,
+      "title": string,
+      "startTime": number,
+      "link": string,
+    }
+
+export function addDate(contests : addDateType[]){
+    const simplified = contests.map((contest) => ({
+        ...contest,
+        date : unixToDate(contest.startTime)
     }));
 
     return simplified;
