@@ -23,11 +23,11 @@ export function unixToDate(startTime : number){
     ];
     const year = unixTime.getFullYear();
     const month = months[unixTime.getMonth()];
-    const date = unixTime.getDate();
+    const day = unixTime.getDate();
 
-    const formattedDate = date + " " + month;
+    const formattedDate = day + " " + month;
 
-    return {time, date , month};
+    return {time, day , month};
 }
 
 
