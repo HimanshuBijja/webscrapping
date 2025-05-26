@@ -24,7 +24,7 @@ function ratingOBJ(str) {
     // Count stars by counting '★' characters
     const stars = (str.match(/★/g) || []).length;
 
-    // Extract highest rating inside parentheses at the end
+    // Extract highest rating inside parentheses at the end 
     const highestRatingMatch = str.match(/\(Highest Rating (\d+)\)/);
     const highestRating = highestRatingMatch
         ? Number(highestRatingMatch[1])
@@ -58,13 +58,14 @@ function contestCountOBJ(str) {
     return match ? Number(match[0]) : 0;
 }
 
-export const scrapping = async () => {
+export const scrapping = async (username) => {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
     // const username = "himanshu_bijja"
-    // const CODECHEF_USER_PROFILE_URL = `https://www.codechef.com/users/${username}`
-    await page.goto("https://www.codechef.com/users/potato167", {
+    const CODECHEF_USER_PROFILE_URL = `https://www.codechef.com/users/${username}`
+    const url = "https://www.codechef.com/users/potato167"
+    await page.goto(CODECHEF_USER_PROFILE_URL, {
         waitUntil: "domcontentloaded",
     });
 
@@ -79,17 +80,30 @@ export const scrapping = async () => {
             .querySelector(".contest-participated-count")
             ?.textContent?.trim(); //codechef rating
 
-        return { rating, rank, contest };
+        //Edition <--!-->
+        const contestNames = Array.from(
+            document.querySelectorAll(
+                ".rating-data-section.problems-solved h5"
+            )
+        ).map((el) => el?.textContent?.trim());
+
+        ///Edition <--!-->
+        
+        return { rating, rank, contest, contestNames };
     });
-
+    
     await browser.close();
-
+    
     const highestRatingObj = ratingOBJ(title.rating);
     const rankObj = parseRank(title.rank);
     const contestCountObj = contestCountOBJ(title.contest);
-    const data = formatToJson(title);
+    // const data = formatToJson(title);
+    const contests = title.contestNames;
+    contests.reverse();
+    // console.log("contests"+contests);
     return {
         // ...data,
+        contests,
         rating: highestRatingObj,
         rank: rankObj,
         contestCount: contestCountObj,
