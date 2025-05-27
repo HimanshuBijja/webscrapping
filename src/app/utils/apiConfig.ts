@@ -11,7 +11,7 @@ export const LEETCODE_CONTESTS_QUERY = `
         }
         `;
 
-export const LEETCODE_CONTEST_QUERY_WITH_HISTORY = `
+export const LEETCODE_USER_CONTEST_HISTORY = `
         query userContestRankingInfo($username: String!) {
             userContestRanking(username: $username) {
                 attendedContestsCount
@@ -19,7 +19,9 @@ export const LEETCODE_CONTEST_QUERY_WITH_HISTORY = `
                 globalRanking
                 totalParticipants
                 topPercentage
-                
+                badge {
+                name
+                }
             }
             userContestRankingHistory(username: $username) {
                 attended
@@ -39,19 +41,26 @@ export const LEETCODE_CONTEST_QUERY_WITH_HISTORY = `
 
 export const LEETCODE_USER_PROBLEMS_SOLVED = `
         query userSessionProgress($username: String!) {
-            allQuestionsCount {    
-                difficulty   
+            allQuestionsCount {
+                difficulty
                 count
             }
             matchedUser(username: $username) {
                 submitStats {
-                    acSubmissionNum {
-                        difficulty
-                        count
-                    }    
+                acSubmissionNum {
+                    difficulty
+                    count
+                    submissions
+                }
+                totalSubmissionNum {
+                    difficulty
+                    count
+                    submissions
+                }
                 }
             }
-        }`;
+        }
+`;
 
 /*
 
@@ -78,3 +87,33 @@ export const CODEFORCES_CONTESTS_ENDPOINT =
 
 export const CODECHEF_CONTESTS_ENDPOINT =
     "https://www.codechef.com/api/list/contests/all?sort_by=START&sorting_order=asc&offset=0&mode=all";
+
+
+/*
+
+query userContestRankingInfo($username: String!) {
+  userContestRanking(username: $username) {
+    attendedContestsCount
+    rating
+    globalRanking
+    totalParticipants
+    topPercentage
+    badge {
+      name
+    }
+  }
+  userContestRankingHistory(username: $username) {
+    attended
+    trendDirection
+    problemsSolved
+    totalProblems
+    finishTimeInSeconds
+    rating
+    ranking
+    contest {
+      title
+      startTime
+    }
+  }
+}
+*/
