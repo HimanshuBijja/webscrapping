@@ -1,3 +1,5 @@
+
+
 export const LEETCODE_ENDPOINT = "https://leetcode.com/graphql"; //should add the LEETCODE_CONTESTS_QUERY query to this api
 
 //for contests
@@ -77,7 +79,7 @@ export const GEEKSFORGEEKS_CONTESTS_ENDPOINT =
     "https://practiceapi.geeksforgeeks.org/api/vr/events/?page_number=1&sub_type=all&type=contest";
 // you will get all the queries
 export const GEEKSFORGEEKS_USER_ENDPOINT =
-    "https://authapi.geeksforgeeks.org/api-get/user-profile-info/?handle=bijjahimo7lg&article_count=false&redirect=true";
+    "https://authapi.geeksforgeeks.org/api-get/user-profile-info/?handle=<username>&article_count=false&redirect=true";
 // userinformation keep article count false
 
 export const CODEFORCES_USER_ENDPOINT =
