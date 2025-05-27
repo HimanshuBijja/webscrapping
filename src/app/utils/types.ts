@@ -86,6 +86,43 @@ export interface usernameTypes {
     gfgusername: string;
 }
 
+export interface lcAttendedContestsType {
+    attended: boolean;
+    trendDirection: string;
+    problemsSolved: number;
+    totalProblems: number;
+    finishTimeInSeconds: number;
+    rating: number;
+    ranking: number;
+    contest: {
+        title: string;
+        startTime: number;
+    };
+}
+
+export interface problemsSolvedType {
+    data: {
+        allQuestionsCount: totalProblemsType[];
+        matchedUser: {
+            submitStats: {
+                acSubmissionNum: submittedProblemsType[];
+                totalSubmissionNum: submittedProblemsType[];
+            };
+        };
+    };
+}
+
+interface totalProblemsType {
+    difficulty: "All" | "Easy" | "Medium" | "Hard";
+    count: number;
+}
+
+interface submittedProblemsType {
+    difficulty: "All" | "Easy" | "Medium" | "Hard";
+    count: number;
+    submissions: number;
+}
+
 /*
 
 // <--! codeforces !-->
