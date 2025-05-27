@@ -1,22 +1,5 @@
-interface filterContestsType {
-    source: string;
-    day: string;
-    month: string;
-    sortBy: string;
-    sortOrder: string;
-}
+import { filterContestsType, upcomingContestsType } from "./types";
 
-interface upcomingContestsType {
-    source: string;
-    title: string;
-    startTime: number;
-    link: string;
-    date: {
-        time: string;
-        day: number;
-        month: string;
-    };
-}
 
 export function filterContests(
     upcomingContests: upcomingContestsType[],

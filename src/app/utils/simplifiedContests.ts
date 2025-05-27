@@ -1,26 +1,12 @@
 import { isoToUnix } from "./isoToUnix";
+import {
+    addDateType,
+    ccContestType,
+    cfContestType,
+    gfgContestType,
+    lcContestType,
+} from "./types";
 import { unixToDate } from "./unixToDate";
-
-interface gfgContestType {
-    slug: string;
-    start_time: string;
-    end_time: string;
-    banner: {
-        mobile_url: string;
-        desktop_url: string;
-    };
-    name: string;
-    status: string;
-    time_diff: {
-        days: 86;
-        hours: 2087;
-        mins: 7;
-        secs: 23;
-    };
-    type: 3;
-    date: string;
-    time: string;
-}
 
 export function simplifiedGfgContests(contests: gfgContestType[]) {
     const simplified = contests.map((contest) => ({
@@ -31,12 +17,6 @@ export function simplifiedGfgContests(contests: gfgContestType[]) {
     }));
 
     return simplified;
-}
-
-interface lcContestType {
-    title: string;
-    titleSlug: string;
-    startTime: number;
 }
 
 export function simplifiedLcContests(contests: lcContestType[]) {
@@ -50,18 +30,7 @@ export function simplifiedLcContests(contests: lcContestType[]) {
     return simplified;
 }
 
-interface ccContestType {
-    contest_code: string;
-    contest_name: string;
-    contest_start_date: string;
-    contest_end_date: string;
-    contest_start_date_iso: string;
-    contest_end_date_iso: string;
-    contest_duration: string;
-    distinct_users: number;
-}
-
-export function simplifiedCcContests(contests : ccContestType[]){
+export function simplifiedCcContests(contests: ccContestType[]) {
     const simplified = contests.map((contest) => ({
         source: "Code Chef",
         title: contest.contest_name,
@@ -72,20 +41,7 @@ export function simplifiedCcContests(contests : ccContestType[]){
     return simplified;
 }
 
-
-interface cfContestType {
-    id: number;
-    name: string;
-    type: string;
-    phase: string;
-    frozen: boolean;
-    durationSeconds: number;
-    startTimeSeconds: number;
-    relativeTimeSeconds: number;
-}
-
-
-export function simplifiedCfContests(contests : cfContestType[]){
+export function simplifiedCfContests(contests: cfContestType[]) {
     const simplified = contests.map((contest) => ({
         source: "Code forces",
         title: contest.name,
@@ -96,21 +52,11 @@ export function simplifiedCfContests(contests : cfContestType[]){
     return simplified;
 }
 
-interface addDateType {
-      "source": string,
-      "title": string,
-      "startTime": number,
-      "link": string,
-    }
-
-export function addDate(contests : addDateType[]){
+export function addDate(contests: addDateType[]) {
     const simplified = contests.map((contest) => ({
         ...contest,
-        date : unixToDate(contest.startTime)
+        date: unixToDate(contest.startTime),
     }));
 
     return simplified;
 }
-
-
-

@@ -1,8 +1,4 @@
-interface lcContestType {
-    startTime: number;
-    title: string;
-    titleSlug: string;
-}
+import { cfContestType, lcContestType } from "./types";
 
 export function lcUpcomingContests(data: lcContestType[]) {
     const now = Date.now() / 1000;
@@ -16,24 +12,14 @@ export function lcUpcomingContests(data: lcContestType[]) {
     return upcomingContests;
 }
 
-interface cfContestType {
-    id: number;
-    name: string;
-    type: string;
-    phase: string;
-    frozen: boolean;
-    durationSeconds: number;
-    startTimeSeconds: number;
-    relativeTimeSeconds: number;
-}
-
 export function cfUpcomingContests(data: cfContestType[]) {
     const now = Date.now() / 1000;
     const upcomingContests = data.filter(
         (contest: cfContestType) => contest.startTimeSeconds > now
     );
     upcomingContests.sort(
-        (a: cfContestType, b: cfContestType) => a.startTimeSeconds - b.startTimeSeconds
+        (a: cfContestType, b: cfContestType) =>
+            a.startTimeSeconds - b.startTimeSeconds
     );
 
     return upcomingContests;
