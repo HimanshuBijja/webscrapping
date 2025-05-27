@@ -1,28 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchContestData } from "./fetchContestData";
+import { filterContests } from "lib/app/utils/filterContests";
 
 //filter based on source, date  sort based on start time, contest name
-//http://localhost:3000/api/contest?source=All&date=All&sortBy=startTime&sortOrder=asc
-
-/*
-source -> filter
-date -> filter
-
-
-*/
+//http://localhost:3000/api/contest?source=all&day=all&month=all&sortBy=startTime&sortOrder=asc
 
 export async function GET(req: NextRequest) {
+    const query = req.nextUrl.searchParams;
+
+    const queryParameters = {
+
+        source : query.get("source") ?? "all",
+        day : query.get("day") ?? "all",
+        month : query.get("month") ?? "all",
+        sortBy : query.get("sortBy") ?? "all",
+        sortOrder : query.get("sortOrder") ?? "all",
+    }
+
+
     let upcomingContests = await fetchContestData();
 
-    // upcomingContests = upcomingContests.filter(
-    //     (contest) => contest.source === "Leetcode"
-    // ); 
-    // upcomingContests = upcomingContests.filter(
-    //     (contest) => contest.date.day === 1 && contest.date.month === "Jun"
-    // ); 
+    upcomingContests = filterContests(upcomingContests, queryParameters);
 
-    // upcomingContests.sort((a,b) => a.startTime-b.startTime)//asc  startTime will be dynamic
-    // upcomingContests.sort((a,b) => b.startTime-a.startTime)//desc
+
 
     return NextResponse.json({
         upcomingContests,
