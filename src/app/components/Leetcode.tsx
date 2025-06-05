@@ -12,26 +12,20 @@ interface RenderContestType {
 
 export default async function Leetcode() {
     const response = await axios.get(
-        "http://localhost:3000/api/leetcode/contest"
+        "http://localhost:3000/api/contest?source=all&day=all&month=all&sortBy=startTime&sortOrder=asc"
     );
-    const source = response.data.source;
-    const data = response.data.data;
+    const upcomingContests = response.data.upcomingContests;
 
-    const now = Date.now() / 1000;
-    const upcomingContests = data.filter(
-        (contest: any) => contest.startTime > now
-    );
-    upcomingContests.sort(
-        (a: RenderContestType, b: RenderContestType) =>
-            a.startTime - b.startTime
-    );
+
+  
+
 
     return (
         <section className="relative py-24 px-4">
             <div className=" container mx-auto max-w-5xl grid grid-cols-2">
                 {upcomingContests.map((x: RenderContestType, index:any) => (
                     <RenderContest
-                        source={source}
+                        source={x.source}
                         title={x.title}
                         startTime={Number(x.startTime)}
                         key={index}
