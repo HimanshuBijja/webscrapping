@@ -1,8 +1,6 @@
 import axios from "axios";
 import {
     CODEFORCES_USER_ENDPOINT,
-    GEEKSFORGEEKS_USER_ENDPOINT,
-    LEETCODE_CONTESTS_QUERY,
     LEETCODE_ENDPOINT,
     LEETCODE_USER_CONTEST_HISTORY,
     LEETCODE_USER_PROBLEMS_SOLVED,
@@ -17,75 +15,151 @@ export async function fetchUserData({
     ccusername,
     gfgusername,
 }: usernameTypes) {
-    // const codeforcesResponse = await axios.post(CODEFORCES_USER_ENDPOINT, {
-    //     headers: {
-    //         "content-type": "application/json",
-    //     },
-    // });
 
-    // const cfContests = simplifiedCfContests(
-    //     cfUpcomingContests(codeforcesResponse.data.result)
-    // );
-
-    // const codechefResponse = await axios.post(CODECHEF_CONTESTS_ENDPOINT, {
-    //     headers: {
-    //         "content-type": "application/json",
-    //     },
-    // });
-
-    // const ccContests = simplifiedCcContests(
-    //     codechefResponse.data.future_contests
-    // );
-
-    const geeksforgeeksResponse = await axios.get(
-        `https://authapi.geeksforgeeks.org/api-get/user-profile-info/?handle=${gfgusername}&article_count=false&redirect=true`,
-       
-        {
-            headers: {
-                "content-type": "application/json",
-            },
+    const fetchCodeforces = async () => {
+        if (!cfusername) {
+            //checked everything is working fine
+            return {
+                success: false,
+                msg: "Enter Username",
+            };
+        } else {
+            try {
+                const codeforcesFullResponse = await axios.get(
+                    CODEFORCES_USER_ENDPOINT + cfusername,
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                        },
+                    }
+                );
+                return {
+                    success: true,
+                    msg: "Success",
+                    data: codeforcesFullResponse.data,
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    msg: "Incorrect Username",
+                };
+            }
         }
-    );
+    };
 
+    const fetchGeeksforgeeks = async () => {
+        if (!gfgusername) {
+            // checked everything
+            return {
+                success: false,
+                msg: "Enter Username",
+            };
+        } else {
+            try {
+                const geeksforgeeksFullResponse = await axios.get(
+                    `https://authapi.geeksforgeeks.org/api-get/user-profile-info/?handle=${gfgusername}&article_count=false&redirect=true`,
 
-    const leetcodeResponseProblem = await axios.post(
-        LEETCODE_ENDPOINT,
-        {
-            query: LEETCODE_USER_PROBLEMS_SOLVED,
-            variables: { username: lcusername},
-        },
-        {
-            headers: {
-                "content-type": "application/json",
-            },
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                        },
+                    }
+                );
+                return {
+                    success: true,
+                    msg: "Success",
+                    data: geeksforgeeksFullResponse.data,
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    msg: "Incorrect Username",
+                };
+            }
         }
-    ); // array of objects
-    const lcProblemsSolved = lcsimplifiedUserData(leetcodeResponseProblem.data)
+    };
 
+    const fetchLeetcode = async () => {
+        if (!lcusername) {
+            // checked everything is working fine
+            return {
+                success: false,
+                msg: "Enter Username",
+            };
+        } else {
+            try {
+                const leetcodeResponseProblem = await axios.post(
+                    LEETCODE_ENDPOINT,
+                    {
+                        query: LEETCODE_USER_PROBLEMS_SOLVED,
+                        variables: { username: lcusername },
+                    },
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                        },
+                    }
+                );
+                if (leetcodeResponseProblem.data.data.matchedUser === null) {
+                    return {
+                        success: false,
+                        msg: "Incorrect Username",
+                    };
+                } else {
+                    const lcProblemsSolved = lcsimplifiedUserData(
+                        leetcodeResponseProblem.data
+                    );
 
-    const leetcodeResponseContest = await axios.post(
-        LEETCODE_ENDPOINT,
-        {
-            query: LEETCODE_USER_CONTEST_HISTORY,
-            variables: { username: lcusername},
-        },
-        {
-            headers: {
-                "content-type": "application/json",
-            },
+                    const leetcodeResponseContest = await axios.post(
+                        LEETCODE_ENDPOINT,
+                        {
+                            query: LEETCODE_USER_CONTEST_HISTORY,
+                            variables: { username: lcusername },
+                        },
+                        {
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                        }
+                    ); // array of objects
+                    const lcattendedContests = lcattendedUserContests(
+                        leetcodeResponseContest.data.data
+                            .userContestRankingHistory
+                    );
+                    return {
+                        success: true,
+                        msg: "Success",
+                        lcProblemsSolved,
+                        lcattendedContests,
+                    };
+                }
+            } catch (error) {
+                return {
+                    success: false,
+                    msg: "Incorrect Username",
+                };
+            }
         }
-    ); // array of objects
-    const lcattendedContests = lcattendedUserContests(leetcodeResponseContest.data.data.userContestRankingHistory)
-    
-    // const upcomingContests = [
-    //     ...cfContests,
-    //     // ...ccContests,
-    //     ...gfgContests,
-    //     ...lcContests,
-    // ];
+    };
 
-    // return addDate(upcomingContests);
+    const [codeforcesResponse, geeksforgeeksResponse, leetcodeResponse] = await Promise.all([
+        fetchCodeforces(),
+        fetchGeeksforgeeks(),
+        fetchLeetcode(),
+    ]);
 
-    // return leetcodeResponseContest.data;
-    return geeksforgeeksResponse.data;
+    return {
+        codeforcesResponse,
+        geeksforgeeksResponse,
+        leetcodeResponse,
+    };
 }
+
+
+/*
+
+lc - fjzzq2002
+gfg - yash85
+cf - tourist
+
+*/
