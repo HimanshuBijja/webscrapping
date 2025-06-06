@@ -9,10 +9,10 @@ export async function GET(req: NextRequest) {
 
     const queryParameters = {
 
-        lcusername : query.get("lcusername") ?? "NAN",
-        ccusername : query.get("ccusername") ?? "NAN",
-        cfusername : query.get("cfusername") ?? "NAN",
-        gfgusername : query.get("gfgusername") ?? "NAN",
+        lcusername : query.get("lcusername") ?? false,
+        ccusername : query.get("ccusername") ?? false,
+        cfusername : query.get("cfusername") ?? false,
+        gfgusername : query.get("gfgusername") ?? false,
       
     }
 

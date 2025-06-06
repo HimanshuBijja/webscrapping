@@ -80,10 +80,10 @@ export interface addDateType {
 // <--! user types !-->
 
 export interface usernameTypes {
-    lcusername: string;
-    cfusername: string;
-    ccusername: string;
-    gfgusername: string;
+    lcusername: string | boolean;
+    cfusername: string | boolean;
+    ccusername: string | boolean;
+    gfgusername: string | boolean;
 }
 
 export interface lcAttendedContestsType {
